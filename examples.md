@@ -3,9 +3,10 @@
 Real prompts a Claude user might type, with the tool calls Claude makes and the
 actual responses from the live GD catalog.
 
-> The transcripts below were captured from the live connector. The catalog is
-> young and growing — **examples will be refreshed as the catalog grows**, so
-> exact results, IDs, and match scores may differ when you try them.
+> The transcripts below were captured from the live connector (last refreshed
+> **2026-07-04**). The catalog is young and growing — **examples will be
+> refreshed as the catalog grows**, so exact results, IDs, and match scores may
+> differ when you try them.
 
 ---
 
@@ -18,15 +19,17 @@ search_recipes(query="quick weeknight vegan dinner bowl",
                type="vegan", meal_type="dinner", max_time_min=25)
 ```
 
-Response (abridged):
+Response (abridged — 13 matches total):
 
 ```
-Top match(es):
+Top 13 match(es):
 
-  [90] 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl | vegan | dinner | mediterranean | 20min | match 0.41
-  [74] 20-Minute Thai Green Curry with Tofu and Garden Vegetables | vegan | dinner | thai | 18min | match 0.31
-  [85] 20-Minute Sundubu Jjigae (Soft Tofu Stew) | vegan | dinner | korean | 18min | match 0.31
-  [81] Tinga de Garbanzo Tacos | vegan | dinner | mexican | 20min | match 0.27
+  [90] 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl | vegan | dinner | mediterranean | 20min | ★0.0 | match 0.41
+  [240] 20-Minute Ginger-Scallion Tofu & Greens Rice Bowl | vegan | dinner | chinese | 20min | ★0.0 | match 0.39
+  [3] Pasta Pomodoro | vegan | dinner | 25min | ★4.3 | match 0.34
+  [234] Chickpea Puttanesca | vegan | dinner | italian | 20min | ★0.0 | match 0.33
+  [233] 20-Minute Pasta e Fagioli | vegan | dinner | italian | 20min | ★0.0 | match 0.33
+  …
 ```
 
 If you pick one — *"the chickpea bowl sounds good, show me"* — Claude calls
@@ -34,7 +37,7 @@ If you pick one — *"the chickpea bowl sounds good, show me"* — Claude calls
 
 ```
 # 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl
-Type: vegan | Meal: dinner
+Type: vegan | Meal: dinner | Rating: ★0.00
 Time: 8min prep + 12min cook = 20min total
 Servings: 4
 
@@ -79,10 +82,13 @@ search_recipes(query="spicy Korean lunch", cuisine="korean", meal_type="lunch")
 Response:
 
 ```
-Top 2 match(es):
+Top 5 match(es):
 
-  [88] 20-Minute Kimchi Jjigae with Tofu | vegan | lunch | korean | 20min | match 0.46
-  [87] 20-Minute Tofu Bibimbap Bowl | vegan | lunch | korean | 18min | match 0.37
+  [88] 20-Minute Kimchi Jjigae with Tofu | vegan | lunch | korean | 20min | ★0.0 | match 0.46
+  [216] 20-Minute Dubu Jorim Rice Bowl (Soy-Braised Tofu) | vegan | lunch | korean | 20min | ★0.0 | match 0.39
+  [215] 20-Minute Tofu Japchae (Stir-Fried Glass Noodles) | vegan | lunch | korean | 20min | ★0.0 | match 0.38
+  [87] 20-Minute Tofu Bibimbap Bowl | vegan | lunch | korean | 18min | ★0.0 | match 0.37
+  [214] 20-Minute Doenjang Jjigae with Tofu & Vegetables | vegan | lunch | korean | 20min | ★0.0 | match 0.33
 ```
 
 Claude can then summarize the options and fetch the winner with
@@ -91,10 +97,12 @@ and shiitake mushrooms, served over short-grain rice, ready in 20 minutes.
 
 ---
 
-## 3. "I want a high-protein breakfast under 15 minutes" (a miss, then a request)
+## 3. "Got any desserts?" (a miss, then a request)
+
+The catalog is savory-focused today, so some asks come up empty:
 
 ```
-search_recipes(query="high-protein breakfast", meal_type="breakfast", max_time_min=15)
+search_recipes(query="something sweet for dessert", meal_type="dessert")
 ```
 
 Response:
@@ -107,13 +115,13 @@ The catalog doesn't have it yet. Claude offers to log the gap, and with your
 go-ahead calls the one write tool:
 
 ```
-request_recipe(query="high-protein breakfast under 15 minutes", meal_type="breakfast")
+request_recipe(query="chocolate dessert under 20 minutes", meal_type="dessert")
 ```
 
 Response:
 
 ```
-Recipe request logged (id 18, asked 1 time). It is queued as a demand signal
+Recipe request logged (id 19, asked 1 time). It is queued as a demand signal
 for a future catalog batch.
 ```
 
@@ -131,13 +139,16 @@ For plain browsing (no semantic query), Claude uses `list_recipes`:
 list_recipes(meal_type="dinner", type="vegan", limit=5)
 ```
 
-Response (abridged):
+Response:
 
 ```
-Found recipe(s):
+Found 5 recipe(s):
 
   [4] Spinach Chickpea Curry | vegan | dinner | 30min | ★4.6 | 4 servings
   [3] Pasta Pomodoro | vegan | dinner | 25min | ★4.3 | 2 servings
+  [81] Tinga de Garbanzo Tacos | vegan | dinner | 20min | ★0.0 | 4 servings
+  [85] 20-Minute Sundubu Jjigae (Soft Tofu Stew) | vegan | dinner | 18min | ★0.0 | 2 servings
+  [233] 20-Minute Pasta e Fagioli | vegan | dinner | 20min | ★0.0 | 4 servings
 ```
 
 ---
