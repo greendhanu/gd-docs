@@ -99,10 +99,12 @@ and shiitake mushrooms, served over short-grain rice, ready in 20 minutes.
 
 ## 3. "Got any desserts?" (a miss, then a request)
 
-The catalog is savory-focused today, so some asks come up empty:
+The catalog is savory-focused today, so some asks come up empty. Search only
+returns results above a relevance bar — when nothing truly matches, it reports
+an honest miss instead of padding the response with weak lookalikes:
 
 ```
-search_recipes(query="something sweet for dessert", meal_type="dessert")
+search_recipes(query="something sweet for dessert")
 ```
 
 Response:
@@ -115,7 +117,7 @@ The catalog doesn't have it yet. Claude offers to log the gap, and with your
 go-ahead calls the one write tool:
 
 ```
-request_recipe(query="chocolate dessert under 20 minutes", meal_type="dessert")
+request_recipe(query="chocolate dessert under 20 minutes")
 ```
 
 Response:

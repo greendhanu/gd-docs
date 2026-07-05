@@ -26,7 +26,7 @@ recipe sites, and each recipe carries honest provenance and trust labels.
 
 1. Open **Settings → Connectors** (make sure you're on a recent version of Claude Desktop).
 2. Click **Add custom connector** and enter `https://gd.fly.dev/mcp`.
-3. Save — the GD Recipes tools will appear in the tools menu for new chats.
+3. Save — the Good Day (GD) tools will appear in the tools menu for new chats.
 
 Then just ask Claude things like *"Find me a quick vegan dinner"* — see
 [worked examples](examples.md).
