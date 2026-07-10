@@ -4,7 +4,7 @@ Real prompts a Claude user might type, with the tool calls Claude makes and the
 actual responses from the live GD catalog.
 
 > The transcripts below were captured from the live connector (last refreshed
-> **2026-07-04**). The catalog is young and growing — **examples will be
+> **2026-07-09**). The catalog is young and growing — **examples will be
 > refreshed as the catalog grows**, so exact results, IDs, and match scores may
 > differ when you try them.
 
@@ -19,10 +19,10 @@ search_recipes(query="quick weeknight vegan dinner bowl",
                type="vegan", meal_type="dinner", max_time_min=25)
 ```
 
-Response (abridged — 13 matches total):
+Response (abridged — 10 matches total; a relevance floor keeps only real matches):
 
 ```
-Top 13 match(es):
+Top 10 match(es):
 
   [90] 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl | vegan | dinner | mediterranean | 20min | ★0.0 | match 0.41
   [240] 20-Minute Ginger-Scallion Tofu & Greens Rice Bowl | vegan | dinner | chinese | 20min | ★0.0 | match 0.39
