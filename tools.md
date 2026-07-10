@@ -34,7 +34,11 @@ vegan lunch"*.
 | `limit` | integer | Max results to return (default 20). |
 
 Returns a ranked list of matches with recipe ID, name, diet type, meal type,
-cuisine, total time, rating, and match score.
+cuisine, total time, rating, and match score. Results below a minimum relevance
+score are omitted — an empty response means the catalog has no real match (a
+good moment for `request_recipe`), not that results were cut off. Invalid
+filter values (e.g. an unknown `meal_type`) are rejected with a message naming
+the valid options.
 
 ## list_recipes — List recipes (read-only)
 
