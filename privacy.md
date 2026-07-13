@@ -51,4 +51,4 @@ date.
 ## Contact
 
 Questions about this policy or your data:
-[dhanvantari18@gmail.com](mailto:dhanvantari18@gmail.com)
+[founder@gooddayplan.com](mailto:founder@gooddayplan.com)

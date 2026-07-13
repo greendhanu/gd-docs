@@ -44,4 +44,4 @@ versions.
 
 ## Contact
 
-Questions or feedback: [dhanvantari18@gmail.com](mailto:dhanvantari18@gmail.com)
+Questions or feedback: [founder@gooddayplan.com](mailto:founder@gooddayplan.com)
