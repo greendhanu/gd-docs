@@ -1,157 +1,377 @@
 # Worked examples
 
 Real prompts a Claude user might type, with the tool calls Claude makes and the
-actual responses from the live GD catalog.
+responses GD returns.
 
-> The transcripts below were captured from the live connector (last refreshed
-> **2026-07-09**). The catalog is young and growing — **examples will be
-> refreshed as the catalog grows**, so exact results, IDs, and match scores may
-> differ when you try them.
+> The transcripts below were captured on **2026-11-10** from a test household
+> with one picky eater, whose pantry is the one stocked in example 4. Long
+> responses are abridged where marked with `…`. The
+> catalog keeps growing, so the exact recipes, IDs and match scores you see
+> will differ.
+
+1. [A week of dinners the picky eater will eat](#1-a-week-of-dinners-the-picky-eater-will-eat)
+2. [From plan to shopping list](#2-from-plan-to-shopping-list)
+3. [What does my week look like?](#3-what-does-my-week-look-like)
+4. [What can I cook tonight?](#4-what-can-i-cook-tonight)
+5. [Searching the catalog — and an honest miss](#5-searching-the-catalog--and-an-honest-miss)
+6. [Delete my account](#6-delete-my-account)
 
 ---
 
-## 1. "Find me a quick vegan dinner"
+## 1. A week of dinners the picky eater will eat
 
-Claude calls `search_recipes` with your ask as a semantic query plus filters:
+> *"We're four. One of the kids won't touch mushrooms or anything spicy and
+> will refuse the whole plate rather than eat around it. Nobody eats peanuts.
+> I get about 25 minutes at the stove on a weeknight. Plan our dinners."*
 
-```
-search_recipes(query="quick weeknight vegan dinner bowl",
-               type="vegan", meal_type="dinner", max_time_min=25)
-```
-
-Response (abridged — 10 matches total; a relevance floor keeps only real matches):
+Claude first records the household. Members are described by their **role at
+the table** — GD stores no child's name, age or birthdate.
 
 ```
-Top 10 match(es):
+set_profile(household_size=4, daily_active_min=25, exclude=["peanuts"],
+            preferred_cuisines=["indian", "italian"],
+            members=[{"label": "kid 1", "picky_eater": true,
+                      "spice_tolerance": "none", "dislikes": ["mushrooms"],
+                      "portion_scale": 0.5}])
+```
 
-  [90] 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl | vegan | dinner | mediterranean | 20min | ★0.0 | match 0.41
-  [240] 20-Minute Ginger-Scallion Tofu & Greens Rice Bowl | vegan | dinner | chinese | 20min | ★0.0 | match 0.39
-  [3] Pasta Pomodoro | vegan | dinner | 25min | ★4.3 | match 0.34
-  [234] Chickpea Puttanesca | vegan | dinner | italian | 20min | ★0.0 | match 0.33
-  [233] 20-Minute Pasta e Fagioli | vegan | dinner | italian | 20min | ★0.0 | match 0.33
+```
+Profile updated.
+Diet: no restriction
+Household size: 4
+Never serve: peanuts
+Preferred cuisines: indian, italian
+Hands-on time per day: 25 min
+Household members (1):
+  kid 1: spice none, portion 0.5x, won't eat: mushrooms — PICKY EATER: plan one dish everyone eats
+One-dish rule is ON: every part of a plate has to be something the picky eater(s) will actually eat.
+```
+
+Then it opens a draft for the week. The candidates come back **already
+filtered for this household** — and GD says what it removed and why:
+
+```
+create_meal_plan()
+```
+
+```
+Draft plan created. …
+
+ONE-DISH RULE IS ON (kid 1 will refuse a dish rather than eat around it). Every
+candidate below is already kid-friendly and no hotter than 'none'. Plan ONE dish
+the whole table eats — do not plan a second meal for anybody …
+NEVER SERVE: peanuts. Recipes containing these are already removed from the lists below …
+Won't be eaten, also already removed below: mushrooms.
+Hands-on time budget: 25 min/day, at most 25 of it on dinner. The per-dish
+'hands-on' figure below is what it spends — NOT the time until dinner is ready …
+
+Available recipes by meal type (best fit first):
   …
+  DINNER: 20-Minute Pasta e Fagioli, Deconstructed (id=428, 5min hands-on, 20min total),
+    20-Minute Zucchini & Pea Frittata with Crusty Bread (id=429, 6min hands-on, 20min total),
+    Creamy Tomato & White Bean Soup with Cheddar Grilled Cheese Dippers (id=424, 5min hands-on, 18min total),
+    20-Minute Skillet Chicken with Buttered Corn, Broccoli & Cheddar Rice (id=420, 5min hands-on, 20min total),
+    20-Minute Oyakodon (Chicken & Egg Rice Bowl) (id=436, 7min hands-on, 20min total), …
+    (showing the best 12 of 18 that fit; filtered out: 7 not kid-friendly, 4 too spicy (mild), 1 ranked below the top 12)
+
+BUILD-A-PLATE DINNERS (a protein + a grain + a vegetable, already costed and already balanced). …
+  - Rosemary-Lemon Chicken Cutlets + Steamed Jasmine Rice + Roasted Zucchini & Carrot Coins
+    with Parmesan — 20 min hands-on total; main=482, sides=[476, 491]
+  …
+
+Plan ID: 82 | Status: draft
 ```
 
-If you pick one — *"the chickpea bowl sounds good, show me"* — Claude calls
-`view_recipe(recipe_id=90)` and gets the full recipe:
+Claude proposes four dinners; you agree, and it books them in one call. A
+dinner is either a whole dish, or a build-a-plate: a protein with its grain and
+vegetable as `sides`.
 
 ```
-# 20-Minute Lemon-Tahini Chickpea & Bulgur Bowl
-Type: vegan | Meal: dinner | Rating: ★0.00
-Time: 8min prep + 12min cook = 20min total
-Servings: 4
+change_meal_plan(plan_id=82, slots=[
+  {"day": "tuesday",   "meal_type": "dinner", "recipe_id": 420},
+  {"day": "wednesday", "meal_type": "dinner", "recipe_id": 482, "sides": [476, 491]},
+  {"day": "thursday",  "meal_type": "dinner", "recipe_id": 428},
+  {"day": "friday",    "meal_type": "dinner", "recipe_id": 436}])
+```
 
-## Ingredients
-  - 2 cups baby spinach
-  - 1.5 cups boiling water
-  - 2 cans (15 oz each) canned no-salt-added chickpeas, drained and rinsed
-  - 1.5 cups cherry tomatoes, halved
-  - 1 medium cucumber, diced
-  - 3 tbsp extra virgin olive oil
-  - 1 cup fine or quick-cook bulgur
-  - 0.25 cup fresh mint, chopped
-  - 1 cup fresh parsley, chopped
-  - 1 tsp ground cumin
-  - 2 tsp jarred minced garlic
-  - 1 whole lemon, juiced
-  - 0.5 tsp smoked paprika
-  - 3 tbsp tahini
+```
+Updated 4 slots. (4/21 slots filled)
+```
 
-## Instructions
-  1. Put the bulgur in a bowl, pour over the boiling water, cover with a plate,
-     and let it sit and steam while you do everything else (about 10 minutes).
-  2. Heat 1 tbsp olive oil in a skillet over medium-high. Add the drained
-     chickpeas, garlic, cumin, and smoked paprika. Saute 5-6 minutes, pressing
-     a few chickpeas down, until warmed through and lightly crisped.
-  3. Whisk the tahini, lemon juice, remaining 2 tbsp olive oil, and 3-4 tbsp
-     water into a pourable, creamy sauce. Loosen with more water if needed.
-  4. Fluff the bulgur with a fork and fold in the spinach so it gently wilts in
-     the residual heat, then stir through the parsley and mint.
-  5. Pile the herby bulgur into bowls, top with the warm spiced chickpeas,
-     tomatoes, and cucumber, and drizzle generously with the lemon-tahini sauce.
+> *"Zucchini won't fly on Wednesday. Carrots would."*
+
+Only the refused part changes — the chicken and rice stand:
+
+```
+change_meal_plan(plan_id=82, slots=[
+  {"day": "wednesday", "meal_type": "dinner", "recipe_id": 482, "sides": [476, 495]}])
+```
+
+```
+Updated wednesday/dinner. (4/21 slots filled)
 ```
 
 ---
 
-## 2. "What spicy Korean lunch ideas do you have?"
+## 2. From plan to shopping list
+
+> *"That's the week. What do I need to buy?"*
+
+Finalizing does three things at once: locks the plan, builds the grocery list,
+and puts each dinner on its date.
 
 ```
-search_recipes(query="spicy Korean lunch", cuisine="korean", meal_type="lunch")
+finalize_plan(plan_id=82)
 ```
 
-Response:
+```
+Plan finalized. Here is your grocery list (items you already have in pantry are
+marked). 4 meal(s) are now on the calendar, starting 2026-11-09 — see them with view_day.
+
+[FRUITS]
+  - lemon: need 1 whole
+[OILS]
+  - olive oil: need 4 tbsp — pantry has 1 bottle — GD can't convert that to tbsp,
+    so it isn't counted against this line
+[OTHER]
+  - boneless skinless chicken thighs: need 1.25 lb
+  - canned cannellini beans, no-salt-added, drained and rinsed: need 2 can (15 oz each)
+  - carrots, peeled and cut into thick coins: need 1.5 lb
+  - frozen corn kernels: need 1.5 cups
+  - jasmine rice: need 1.5 cups
+  - short dried pasta (ditalini or small shells): need 12 oz
+  - shredded mild cheddar cheese: need 0.75 cup
+  …
+[SPICES]
+  - salt: need 2 tsp
+```
+
+GD is plain about what it can't work out: where the pantry holds "1 bottle"
+and a recipe needs tablespoons, it says so instead of guessing. The list is
+fixed once the plan is finalized, so `view_grocery_list()` shows the same list
+later — in the shop, in a new conversation.
+
+---
+
+## 3. "What does my week look like?"
+
+> *"How heavy is each evening?"*
+
+Every day shows its **hands-on minutes** against the household's budget — the
+time someone stands at the stove, not the time until dinner is ready.
+
+```
+view_day(day="today", days=5)
+```
+
+```
+2026-11-10 → 2026-11-14:
+  2026-11-10: 1 meal(s), 1 thing(s) on it — 5/25 min
+  2026-11-11: 1 meal(s), 1 thing(s) on it — 21/25 min
+  2026-11-12: 1 meal(s), 1 thing(s) on it — 5/25 min
+  2026-11-13: 1 meal(s), 1 thing(s) on it — 7/25 min
+```
+
+Wednesday is the heavy one. Looking closer:
+
+```
+view_day(day="wednesday")
+```
+
+```
+2026-11-11:
+
+  [2] dinner: Rosemary-Lemon Chicken Cutlets (21 min hands-on)
+      With: Steamed Jasmine Rice, Maple-Roasted Carrot Coins
+
+Hands-on: 21 of 25 min — 4 left
+```
+
+> *"Wednesday I'm home late. Move that to Saturday — and remind me to thaw the
+> cutlets."*
+
+```
+move_event(event_id=2, day="saturday")
+```
+
+```
+Moved.
+  [2] dinner: Rosemary-Lemon Chicken Cutlets (21 min hands-on)
+      With: Steamed Jasmine Rice, Maple-Roasted Carrot Coins
+
+Hands-on: 21 of 25 min — 4 left
+```
+
+```
+add_task(title="thaw the chicken cutlets", day="today")
+```
+
+```
+Added on 2026-11-10.
+  [1] ☐ thaw the chicken cutlets
+```
+
+A task costs the hands-on budget nothing — remembering to defrost is not
+cooking. When it's done, `complete_task(task_id=1)` ticks it off:
+
+```
+Done.
+  [1] ☑ thaw the chicken cutlets
+```
+
+---
+
+## 4. "What can I cook tonight?"
+
+> *"I just did a shop — rice, chicken thighs, broccoli, eggs, olive oil,
+> garlic, pasta, tinned tomatoes. What can I make tonight without going out
+> again?"*
+
+```
+add_pantry_items(items=[
+  {"name": "basmati rice", "quantity": 2, "unit": "lbs"},
+  {"name": "chicken thighs", "quantity": 1.5, "unit": "lbs"},
+  {"name": "broccoli", "quantity": 2, "unit": "pcs"},
+  {"name": "eggs", "quantity": 12, "unit": "pcs"},
+  {"name": "olive oil", "quantity": 1, "unit": "bottle"},
+  {"name": "garlic", "quantity": 1, "unit": "pcs"},
+  {"name": "pasta", "quantity": 1, "unit": "lbs"},
+  {"name": "canned tomatoes", "quantity": 2, "unit": "cans"}])
+```
+
+```
+Items added. Current pantry (8 items):
+  eggs: 12 pcs
+  pasta: 1 lbs
+  olive oil: 1 bottle
+  garlic: 1 pcs
+  basmati rice: 2 lbs
+  broccoli: 2 pcs
+  canned tomatoes: 2 cans
+  chicken thighs: 1.5 lbs
+```
+
+```
+cook_now()
+```
+
+```
+Nothing is within 3 ingredients of your pantry for dinner.
+Pantry: olive oil, pasta, garlic, eggs, canned tomatoes, broccoli, basmati rice, chicken thighs.
+Also ruled out for this household: 7 not kid-friendly, 4 too spicy (mild).
+Raise max_missing to see near-misses, or add what you have with add_pantry_items.
+```
+
+An honest answer, with the reason. Claude widens the net:
+
+```
+cook_now(max_missing=5)
+```
+
+```
+What you can cook now (dinner):
+
+READY-MADE DISHES:
+• Pasta Pomodoro — 12 min hands-on
+    Need: tomatoes, water, salt, black pepper, fresh basil leaves
+    Using your: olive oil, pasta, garlic
+
+Amounts are not checked — GD knows what you have, not how much. Finalize a meal
+plan for a shopping list that does the arithmetic.
+```
+
+---
+
+## 5. Searching the catalog — and an honest miss
+
+> *"Any quick chicken and rice dinners the kids would eat?"*
+
+```
+search_recipes(query="chicken and rice dinner", kid_friendly=true,
+               max_time_min=30, limit=5)
+```
 
 ```
 Top 5 match(es):
 
-  [88] 20-Minute Kimchi Jjigae with Tofu | vegan | lunch | korean | 20min | ★0.0 | match 0.46
-  [216] 20-Minute Dubu Jorim Rice Bowl (Soy-Braised Tofu) | vegan | lunch | korean | 20min | ★0.0 | match 0.39
-  [215] 20-Minute Tofu Japchae (Stir-Fried Glass Noodles) | vegan | lunch | korean | 20min | ★0.0 | match 0.38
-  [87] 20-Minute Tofu Bibimbap Bowl | vegan | lunch | korean | 18min | ★0.0 | match 0.37
-  [214] 20-Minute Doenjang Jjigae with Tofu & Vegetables | vegan | lunch | korean | 20min | ★0.0 | match 0.33
+  [420] 20-Minute Skillet Chicken with Buttered Corn, Broccoli & Cheddar Rice | non-veg | dinner | american | 20min | ★0.0 | kid: yes (none) | match 0.70
+  [436] 20-Minute Oyakodon (Chicken & Egg Rice Bowl) | non-veg | dinner | japanese | 20min | ★0.0 | kid: yes (none) | match 0.68
+  [446] 20-Minute Mild Tom Kha Gai (Thai Coconut-Chicken Soup) with Jasmine Rice | non-veg | dinner | thai | 20min | ★0.0 | kid: yes (mild) | match 0.67
+  [447] 20-Minute Thai Garlic-Oyster Chicken & Veggie Stir-Fry (Pad Pak Gai) with Jasmine Rice | non-veg | dinner | thai | 20min | ★0.0 | kid: yes (none) | match 0.58
+  [459] Bun Ga Nuong (Lemongrass Chicken Vermicelli Bowl, Build-Your-Own) | non-veg | dinner | vietnamese | 20min | ★0.0 | kid: yes (none) | match 0.49
 ```
 
-Claude can then summarize the options and fetch the winner with
-`view_recipe(recipe_id=88)` — a kimchi jjigae with gochujang, gochugaru, tofu,
-and shiitake mushrooms, served over short-grain rice, ready in 20 minutes.
+`view_recipe(recipe_id=420)` then returns the full recipe — ingredients with
+quantities, ordered steps, times and servings.
 
----
+> *"Got any desserts?"*
 
-## 3. "Got any desserts?" (a miss, then a request)
-
-The catalog is savory-focused today, so some asks come up empty. Search only
+The catalog is dinner-focused today, so some asks come up empty. Search only
 returns results above a relevance bar — when nothing truly matches, it reports
-an honest miss instead of padding the response with weak lookalikes:
+a miss instead of padding the response with weak lookalikes:
 
 ```
 search_recipes(query="something sweet for dessert")
 ```
 
-Response:
-
 ```
 No recipes found matching that search.
 ```
 
-The catalog doesn't have it yet. Claude offers to log the gap, and with your
-go-ahead calls the one write tool:
+Claude offers to log the gap, and with your go-ahead calls:
 
 ```
-request_recipe(query="chocolate dessert under 20 minutes")
+request_recipe(query="chocolate dessert under 20 minutes", exclude=["peanuts"])
 ```
 
-Response:
-
 ```
-Recipe request logged (id 19, asked 1 time). It is queued as a demand signal
+Recipe request logged (id 87, asked 1 time). It is queued as a demand signal
 for a future catalog batch.
 ```
 
-Only the ask itself is stored — no account, no identity — and popular asks
-shape what gets added to the catalog next. Details in the
+Nothing is generated on the spot; popular asks shape what gets added next.
+The request is stored with your account — details in the
 [privacy policy](privacy.md).
 
 ---
 
-## 4. "Show me vegan dinners I can browse"
+## 6. "Delete my account"
 
-For plain browsing (no semantic query), Claude uses `list_recipes`:
+> *"I'm done with GD. Delete everything you have on me."*
 
-```
-list_recipes(meal_type="dinner", type="vegan", limit=5)
-```
-
-Response:
+The first call deletes nothing. It reports exactly what would go:
 
 ```
-Found 5 recipe(s):
-
-  [4] Spinach Chickpea Curry | vegan | dinner | 30min | ★4.6 | 4 servings
-  [3] Pasta Pomodoro | vegan | dinner | 25min | ★4.3 | 2 servings
-  [81] Tinga de Garbanzo Tacos | vegan | dinner | 20min | ★0.0 | 4 servings
-  [85] 20-Minute Sundubu Jjigae (Soft Tofu Stew) | vegan | dinner | 18min | ★0.0 | 2 servings
-  [233] 20-Minute Pasta e Fagioli | vegan | dinner | 20min | ★0.0 | 4 servings
+delete_my_account()
 ```
+
+```
+Nothing has been deleted yet. Deleting this account permanently removes the household profile and:
+  - household members: 1
+  - pantry items: 8
+  - meal plans: 1
+  - grocery lists: 1
+  - meals and prep steps on your days: 4
+  - tasks: 1
+  - days with a plan: 5
+Kept, with the link to this account removed:
+  - recipe requests: 0
+Your sign-in account at the login provider is deleted too.
+This cannot be undone. Copies in backups expire within about two weeks.
+
+Ask the person to confirm they want this. If they do, call delete_my_account again with confirm="DELETE MY ACCOUNT".
+```
+
+Claude shows you that list and asks. Only after you say yes does it call the
+tool again with the confirmation phrase:
+
+```
+delete_my_account(confirm="DELETE MY ACCOUNT")
+```
+
+GD then removes the data, removes your sign-in account at the login provider,
+and reports which parts were deleted. Disconnecting the connector in Claude's
+settings does **not** delete anything; this does.
 
 ---
 
