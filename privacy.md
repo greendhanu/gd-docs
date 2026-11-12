@@ -127,14 +127,16 @@ is there if you reconnect.
 
 To delete it:
 
-1. **From Claude** — ask Claude to *"delete my Good Day account"*. GD shows you
-   what will be removed and asks you to confirm. On confirmation it permanently
-   deletes your household profile and members, pantry, meal plans, grocery
-   lists, days and tasks, unlinks your recipe requests, and deletes your
-   sign-in account at WorkOS. This cannot be undone.
-2. **By email** — write to
+1. **From Claude — the fastest way.** Ask Claude to *"delete my Good Day
+   account"*. GD shows you what will be removed and asks you to confirm. On
+   confirmation it takes effect right away: it permanently deletes your
+   household profile and members, pantry, meal plans, grocery lists, days and
+   tasks, unlinks your recipe requests, and deletes your sign-in account at
+   WorkOS. This cannot be undone.
+2. **By email — if you can't sign in.** Write to
    [founder@gooddayplan.com](mailto:founder@gooddayplan.com) from the address
-   you sign in with, and we will do the same within 30 days.
+   you signed up with. We will confirm that we received your request and
+   complete the same deletion within 30 days.
 
 Copies in backups expire on the schedule under [Retention](#retention).
 
