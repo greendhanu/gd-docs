@@ -47,6 +47,8 @@ GD does not contact any outside service on your behalf, with one exception:
 
 ## Catalog
 
+GD's goal is one dish the whole family eats, so `search_recipes` and `list_recipes` show **kid-friendly dishes only, by default**. The rest of the catalog is hidden, not gone: ask for it and the assistant passes `include_hidden`. If you are used to the earlier recipe-search version of GD, a search for a spicy dish now returns fewer results.
+
 ### search_recipes — Search recipes (read-only)
 
 Searches recipes by natural-language meaning plus structured filters. Use it
@@ -64,7 +66,8 @@ query ("kid friendly breakfast", "vegan lunch") are understood as filters.
 | `cuisine` | string | Cuisine filter, e.g. `indian`, `italian`. |
 | `max_time_min` | integer | Max total time (prep + cook) in minutes. |
 | `min_rating` | number | Minimum rating (0.0–5.0). |
-| `kid_friendly` | boolean | `true` for dishes judged suitable for children, `false` for adults-only ones. Omit to include recipes not yet judged. |
+| `kid_friendly` | boolean | Leave it out: GD shows kid-friendly dishes only by default. `false` lists the adults-only ones instead. A recipe nobody has judged yet is never returned as either answer. |
+| `include_hidden` | boolean | `true` lifts the kid-friendly default and shows the whole catalog, including adults-only and not-yet-judged recipes. Use it only when you ask for it. |
 | `max_spice_level` | string | Heat ceiling: `none`, `mild`, `medium` or `hot`. |
 | `limit` | integer | Max results to return (default 20). |
 
@@ -80,7 +83,7 @@ Lists recipes with structured filters and pagination — browsing rather than
 searching.
 
 **Parameters** (all optional): `meal_type`, `type`, `max_time_min`,
-`min_rating`, `kid_friendly`, `max_spice_level` and `limit` as above, plus:
+`min_rating`, `kid_friendly`, `include_hidden`, `max_spice_level` and `limit` as above, plus:
 
 | Parameter | Type | Description |
 |---|---|---|
@@ -93,6 +96,11 @@ searching.
 Returns one recipe in full: description, ingredients with quantities, ordered
 steps, prep/cook/total times, servings, rating, and source attribution when
 present.
+
+Ingredient lines show the food and, after a comma, what to do with it ("onion, diced"). When a dish uses foods that are not on GD's staples list, a
+"Not on the staples list" line names them and how many other kid-friendly
+recipes use each, so you can see what is extra shopping for this dish. It is a
+flag, not a refusal: you decide.
 
 | Parameter | Type | Description |
 |---|---|---|
