@@ -1,6 +1,6 @@
 # Privacy policy
 
-**Good Day (GD) — Claude connector** (`https://gd.fly.dev/mcp`)
+**Good Day (GD) — Claude connector** (`https://mcp.gooddayplan.com/mcp`)
 
 **Effective date: 2026-07-04**
 

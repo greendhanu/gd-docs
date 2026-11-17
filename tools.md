@@ -1,6 +1,6 @@
 # Tool reference
 
-Good Day (GD) exposes **24 tools** at `https://gd.fly.dev/mcp`. All of them
+Good Day (GD) exposes **24 tools** at `https://mcp.gooddayplan.com/mcp`. All of them
 require you to be signed in. Four read the shared recipe catalog; twenty work on
 **your own household's data** — profile, pantry, meal plans, grocery lists and
 the meals and tasks on your days. No tool can read or change another

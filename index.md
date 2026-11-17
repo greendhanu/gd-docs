@@ -35,14 +35,14 @@ account and everything in it from inside Claude at any time. See the
 
 1. Go to **Settings → Connectors**.
 2. Click **Add custom connector**.
-3. Enter the URL: `https://gd.fly.dev/mcp`
+3. Enter the URL: `https://mcp.gooddayplan.com/mcp`
 4. Click **Add**, then **Connect**. A sign-in page opens: create a Good Day
    account or sign in, and approve access.
 
 ### Claude Code
 
 ```
-claude mcp add --transport http gd https://gd.fly.dev/mcp
+claude mcp add --transport http gd https://mcp.gooddayplan.com/mcp
 ```
 
 Then run `/mcp`, choose `gd`, and complete the sign-in in your browser.
