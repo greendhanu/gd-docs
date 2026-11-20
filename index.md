@@ -55,6 +55,7 @@ kids won't eat anything spicy"* — see [worked examples](examples.md).
 - [Tool reference](tools.md) — all 24 tools and their parameters
 - [Worked examples](examples.md) — real prompts and responses
 - [Privacy policy](privacy.md) — what we store, and how to delete it
+- [Consumer health data notice](health-data.md) — for Washington and Nevada residents
 
 ## Roadmap
 
