@@ -2,7 +2,7 @@
 
 **Good Day (GD) — Claude connector**
 
-**Effective date: _to be set on the day v2 goes live_** · Previous version:
+**Effective date: November 19, 2026** · Previous version:
 2026-07-04 (no accounts, recipe catalog only)
 
 ## Summary
@@ -23,8 +23,8 @@ tasks on your days — under an account you sign in to.
 
 ## Who we are
 
-GD is operated by **_[legal name of the business, and the state it is
-registered in]_** ("GD", "we", "us"). GD is intended for adults in the
+GD is run by an independent developer in the United States (a sole
+proprietor, not a company) under the name **Good Day (GD)** ("GD", "we", "us"). GD is intended for adults in the
 **United States**. If you use it from elsewhere, your data is processed in the
 United States.
 
@@ -208,5 +208,3 @@ requires it.
 
 Questions about this policy or your data:
 [founder@gooddayplan.com](mailto:founder@gooddayplan.com)
-
-**_[Legal name of the business]_**, **_[mailing address]_**

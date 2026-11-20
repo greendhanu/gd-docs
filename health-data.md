@@ -2,12 +2,13 @@
 
 **Good Day (GD) — Claude connector**
 
-**Effective date: _to be set on the day v2 goes live_**
+**Effective date: November 19, 2026**
 
 This notice supplements our [Privacy policy](privacy.md). It explains how GD
 handles **consumer health data** as defined by Washington's My Health My Data
 Act and Nevada's consumer health data law, and applies to residents of those
-states. GD is operated by **_[legal name of the business]_**.
+states. GD is operated by an independent developer under the name
+**Good Day (GD)**.
 
 ## What health data we collect
 
@@ -63,5 +64,4 @@ contact your state Attorney General.
 
 ## Contact
 
-[founder@gooddayplan.com](mailto:founder@gooddayplan.com) ·
-**_[Legal name of the business]_**, **_[mailing address]_**
+[founder@gooddayplan.com](mailto:founder@gooddayplan.com)
