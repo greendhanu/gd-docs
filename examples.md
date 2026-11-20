@@ -10,6 +10,11 @@ responses GD returns.
 > Long responses are abridged where marked with `…`. GD shows kid-friendly
 > dishes only by default, so a request for something else (chicken, dessert)
 > can come back empty — example 5 shows what that looks like.
+>
+> **Name Good Day when you start a chat** ("Using Good Day, …"). Claude loads a
+> connector's tools on demand, so with several connectors installed an unnamed
+> ask may be answered from Claude's own knowledge instead of your saved
+> household. Follow-ups in the same chat don't need it.
 
 1. [A week of dinners the picky eater will eat](#1-a-week-of-dinners-the-picky-eater-will-eat)
 2. [From plan to shopping list](#2-from-plan-to-shopping-list)
@@ -22,7 +27,7 @@ responses GD returns.
 
 ## 1. A week of dinners the picky eater will eat
 
-> *"We're four. One of the kids won't touch mushrooms or anything spicy and
+> *"Using Good Day: we're four. One of the kids won't touch mushrooms or anything spicy and
 > will refuse the whole plate rather than eat around it. Nobody eats peanuts.
 > I get about 25 minutes at the stove on a weeknight. Plan our dinners."*
 
@@ -221,7 +226,7 @@ Done.
 
 ## 4. "What can I cook tonight?"
 
-> *"I just did a shop — rice, chicken thighs, broccoli, eggs, olive oil,
+> *"Using Good Day: I just did a shop — rice, chicken thighs, broccoli, eggs, olive oil,
 > garlic, pasta, tinned tomatoes. What can I make tonight without going out
 > again?"*
 
@@ -285,7 +290,7 @@ plan for a shopping list that does the arithmetic.
 
 ## 5. Searching the catalog — and an honest miss
 
-> *"Any quick rice dinners the kids would eat?"*
+> *"Using Good Day, any quick rice dinners the kids would eat?"*
 
 ```
 search_recipes(query="a quick rice dinner", kid_friendly=true,
